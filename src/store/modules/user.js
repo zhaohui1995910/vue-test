@@ -54,11 +54,7 @@ const actions = {
                     const {message} = response
                     const {roles, name, avatar, introduction} = message
 
-                    console.log('get info1', roles)
-
                     commit('SET_ROLES', roles)
-
-                     console.log('get info2', state.roles)
                     commit('SET_NAME', name)
                     commit('SET_AVATAR', avatar)
                     commit('SET_INTRODUCTION', introduction)

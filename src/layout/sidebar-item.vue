@@ -1,13 +1,14 @@
 <template>
   <div v-if="!item.hidden">
-    <el-menu-item
-        v-if="hasOneShowingChild(item.children, item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren) && !item.alwaysShow"
-        :index="item.path"
-        :key="item.path"
-    >
-      <i v-if="item.meta.icon" :class="item.meta.icon"></i>
-      <span slot="title">{{ onlyOneChild.meta.title }}</span>
-    </el-menu-item>
+    <template v-if="hasOneShowingChild(item.children, item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren) && !item.alwaysShow">
+      <router-link :to="item.path">
+        <el-menu-item :index="item.path" :key="item.path">
+          <i v-if="item.meta.icon" :class="item.meta.icon"></i>
+          <span slot="title">{{ onlyOneChild.meta.title }}</span>
+        </el-menu-item>
+      </router-link>
+    </template>
+
 
     <el-submenu v-else :index="item.path" :key="item.path">
       <template slot="title">
@@ -24,6 +25,7 @@
 </template>
 
 <script>
+
 export default {
   name: "SidebarItem",
   props: {

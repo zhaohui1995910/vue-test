@@ -1,5 +1,6 @@
 import {verify_toekn} from "@/api/user"
 import router from '@/router'
+import store from "@/store"
 import {getToken, setToken} from '@/utils/auth'
 import getPageTitle from "@/utils/index"
 import {Message} from "element-ui"
@@ -14,6 +15,16 @@ router.beforeEach(async (to, from, next) => {
     const hasToken = getToken()
 
     if (hasToken) {
+        // 当刷新页面需要重新挂载路由
+        if (store.getters.routes.length===0) {
+            // 需要重新挂载动态路由
+            console.log('角色', store.getters.roles)
+            const { roles } = await store.dispatch('user/getInfo')
+            const accessRoutes = await store.dispatch('permission/generateRoutes', roles)
+            router.addRoutes(accessRoutes)
+            console.log('角色', store.getters.routes)
+            next({...to, replace: true})
+        }
         // 校验tokne是否有效
         verify_toekn({token: hasToken}).then(
             response => {

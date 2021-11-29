@@ -3,7 +3,8 @@
     <el-container style="height: 100%">
       <!--导航栏-->
       <el-aside style="background-color: rgb(238, 241, 246);width: 300px">
-        <el-menu default-active="2" class="el-menu-vertical-demo">
+        <logo />
+        <el-menu class="el-menu-vertical-demo">
           <SidebarItem v-for="route in asyncRoutes" :key="route.path" :item="route" />
         </el-menu>
       </el-aside>
@@ -35,37 +36,42 @@
 import {verify_toekn} from "@/api/user"
 import {getToken, setToken} from '@/utils/auth'
 import SidebarItem from './sidebar-item'
+import Logo from './logo'
 
 export default {
   name: "Layout",
-  components: {SidebarItem},
+  components: {Logo, SidebarItem},
   data() {
     return {
-      asyncRoutes: [],
+      asyncRoutes: this.$store.getters.asyncRoutes,
       openMenu: [],
       itmer: undefined,
       user: {
-        name: 'zzz',
+        name: 'test',
         roles: [],
       }
     }
   },
   created() {
     // 获取用户信息
-    this.$store.dispatch('user/getInfo').then(
-        (userInfo) => {
-          this.user = userInfo
-          // # 获取动态路由
-          this.$store.dispatch('permission/generateRoutes', this.$store.getters.roles).then(
-              (asyncRoutes) => {
-                this.asyncRoutes = asyncRoutes
-              }
-          )
-        }
-    )
+    // 如果挂载动态路由只写在这里，点击刷新会重置router导致找不到页面，所以还是写在路由守卫中
+    // this.$store.dispatch('user/getInfo').then(
+    //     (userInfo) => {
+    //       this.user = userInfo
+    //       // # 获取动态路由
+    //       this.$store.dispatch('permission/generateRoutes', this.$store.getters.roles).then(
+    //           (asyncRoutes) => {
+    //             // 挂载动态路由
+    //             console.log('挂载动态路由', asyncRoutes)
+    //             this.asyncRoutes = asyncRoutes
+    //             router.addRoutes(this.asyncRoutes)
+    //             console.log(router)
+    //           }
+    //       )
+    //     }
+    // )
     // 挂载动态路由
-    this.$router.addRoutes(this.asyncRoutes)
-    console.log('router', this.$router)
+    // router.addRoutes(this.asyncRoutes)
   },
   methods: {},
   mounted() {

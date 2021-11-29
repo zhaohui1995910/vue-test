@@ -6,26 +6,29 @@ import Layout from '@/layout'
 Vue.use(VueRouter)
 
 
-export default new VueRouter({
-    routes: [
-        {
-            path: '/',
-            component: Layout,
-            meta: {title: '首页'}
-        },
-        {
-            path: '/login',
-            component: Login,
-            name: 'Login',
-            meta: {title: '登录'}
-        },
-    ]
-})
+export const constantRoutes = [
+    {
+        path: '/',
+        component: Layout,
+        meta: {title: '首页'}
+    },
+    {
+        path: '/test1',
+        component: Layout,
+        meta: {title: '首页'}
+    },
+    {
+        path: '/login',
+        component: Login,
+        name: 'Login',
+        meta: {title: '登录'}
+    },
+]
 
 export const asyncRoutes = [
     {
         path: '/test1',
-        component: Login,
+        component: Layout,
         name: 'Test',
         meta: {
             title: '测试1',
@@ -36,7 +39,7 @@ export const asyncRoutes = [
             {
                 path: 't1',
                 name: 'T1',
-                component: Login,
+                component: Layout,
                 meta: {
                     title: 'T111',
                     roles: ['spider']
@@ -46,8 +49,8 @@ export const asyncRoutes = [
     },
     {
         path: '/test2',
-        component: Login,
-        name: 'Test',
+        component: Layout,
+        name: 'Test2',
         meta: {
             title: '测试2',
             roles: ['spider'],
@@ -56,8 +59,8 @@ export const asyncRoutes = [
     },
     {
         path: '/test3',
-        component: Login,
-        name: 'Test',
+        component: Layout,
+        name: 'Test3',
         meta: {
             title: '测试3',
             roles: ['spider'],
@@ -65,3 +68,10 @@ export const asyncRoutes = [
         },
     },
 ]
+
+const createRouter = () => new VueRouter({
+    routes: constantRoutes
+})
+const router = createRouter()
+
+export default router
