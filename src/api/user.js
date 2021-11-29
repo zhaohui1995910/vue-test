@@ -7,3 +7,18 @@ export function login(data) {
         data
     })
 }
+
+export function verify_toekn(data) {
+    return request({
+        url:"/user/verify_toekn",
+        method: 'POST',
+        data
+    })
+}
+
+export function getInfo() {
+    return request({
+        url: "/user/info",
+        method: 'GET',
+    })
+}

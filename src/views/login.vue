@@ -35,6 +35,9 @@ export default {
       loading: false,
     }
   },
+  created() {
+    console.log('')
+  },
   methods: {
     submitForm() {
       // 验证用户名和密码不能为空
