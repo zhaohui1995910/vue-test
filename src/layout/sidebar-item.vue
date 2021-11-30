@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!item.hidden">
+  <fragment v-if="!item.hidden">
     <template v-if="hasOneShowingChild(item.children, item)">
       <router-link :to="resolvePath(item.path)">
         <el-menu-item :index="item.path" :key="item.path">
@@ -9,11 +9,10 @@
       </router-link>
     </template>
 
-
-    <el-submenu v-else :index="item.path" :key="item.path">
+    <el-submenu v-else :index="resolvePath(item.path)" :popper-append-to-body="true">
       <template slot="title">
         <i v-if="item.meta.icon" :class="item.meta.icon"></i>
-        {{ item.meta.title }}
+        <span slot="title">{{ item.meta.title }}</span>
       </template>
       <sidebar-item
           v-for="child in item.children"
@@ -22,7 +21,7 @@
           :base-path="resolvePath(item.path)"
       />
     </el-submenu>
-  </div>
+  </fragment>
 </template>
 
 <script>
@@ -30,6 +29,8 @@ import path from 'path'
 
 export default {
   name: "SidebarItem",
+  // components: {Item},
+  // mixins: [FixiOSBug],
   props: {
     item: {
       type: Object,
@@ -78,5 +79,12 @@ export default {
 </script>
 
 <style scoped>
-
+/*解决收缩菜单栏文字不隐藏 （方案一）*/
+.el-menu--collapse  .el-submenu__title span {
+  display: none;
+}
+.el-menu-collapse  .el-submenu__title .el-submenu__icon-arrow{
+  display: none;
+}
+/*解决收缩菜单栏文字不隐藏 （方案二）： 使用fragment标签替换div*/
 </style>

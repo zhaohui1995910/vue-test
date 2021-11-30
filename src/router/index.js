@@ -13,11 +13,6 @@ export const constantRoutes = [
         meta: {title: '首页'}
     },
     {
-        path: '/test1',
-        component: Layout,
-        meta: {title: '首页'}
-    },
-    {
         path: '/login',
         component: Login,
         name: 'Login',
@@ -39,7 +34,7 @@ export const asyncRoutes = [
             {
                 path: 't1',
                 name: 'T1',
-                component: Layout,
+                component: () => import('@/views/test'),
                 meta: {
                     title: 'T111',
                     roles: ['spider']
@@ -56,6 +51,17 @@ export const asyncRoutes = [
             roles: ['spider'],
             icon: 'el-icon-menu',
         },
+        children: [
+            {
+                path: 't2',
+                name: 'T2',
+                component: () => import('@/views/test'),
+                meta: {
+                    title: 'T222',
+                    roles: ['spider']
+                }
+            }
+        ]
     },
     {
         path: '/test3',

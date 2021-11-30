@@ -13,8 +13,9 @@ router.beforeEach(async (to, from, next) => {
 
     // 如果有hastoken不能再访问登录页面
     const hasToken = getToken()
-
-    if (hasToken) {
+    console.log('token1', hasToken)
+    if (hasToken && hasToken !== 'null') {
+        console.log('token2', hasToken)
         // 当刷新页面需要重新挂载路由
         if (store.getters.routes.length===0) {
             // 需要重新挂载动态路由
@@ -46,6 +47,8 @@ router.beforeEach(async (to, from, next) => {
             error => {
                 Message.error(error)
                 console.log('发送验证token的请求失败')
+                setToken(null)
+                // next('/login')
             }
         )
     } else {

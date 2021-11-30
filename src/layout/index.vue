@@ -2,16 +2,25 @@
   <div class="layout">
     <el-container style="height: 100%">
       <!--导航栏-->
-      <el-aside style="background-color: rgb(238, 241, 246);width: 300px">
-        <logo />
-        <el-menu class="el-menu-vertical-demo">
-          <SidebarItem v-for="route in asyncRoutes" :key="route.path" :item="route" />
+      <el-scrollbar style="background-color: rgb(238, 241, 246);width: 250px">
+        <logo/>
+        <el-menu
+            class="el-menu--vertical"
+            :collapse="isCollapse"
+            mode="vertical"
+        >
+          <SidebarItem v-for="route in asyncRoutes" :key="route.path" :item="route"/>
         </el-menu>
-      </el-aside>
+      </el-scrollbar>
 
       <el-container>
+
         <!--top栏-->
         <el-header style="text-align: right; font-size: 12px;background:bisque">
+          <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">
+            <el-radio-button :label="false">展开</el-radio-button>
+            <el-radio-button :label="true">收起</el-radio-button>
+          </el-radio-group>
           <el-dropdown>
             <i class="el-icon-setting" style="margin-right: 15px"></i>
             <el-dropdown-menu slot="dropdown">
@@ -25,9 +34,10 @@
 
         <!--内容栏-->
         <el-main style="background: #42b983">
-          这是内容
+          <router-view/>
         </el-main>
       </el-container>
+
     </el-container>
   </div>
 </template>
@@ -37,6 +47,7 @@ import {verify_toekn} from "@/api/user"
 import {getToken, setToken} from '@/utils/auth'
 import SidebarItem from './sidebar-item'
 import Logo from './logo'
+// import variables from '@/styles/variables.scss'
 
 export default {
   name: "Layout",
@@ -47,9 +58,10 @@ export default {
       openMenu: [],
       itmer: undefined,
       user: {
-        name: 'test',
-        roles: [],
-      }
+        name: this.$store.getters.name,
+        roles: this.$store.getters.roles,
+      },
+      isCollapse: true,
     }
   },
   created() {
@@ -73,6 +85,11 @@ export default {
     // 挂载动态路由
     // router.addRoutes(this.asyncRoutes)
   },
+  computed: {
+    // variables() {
+    //   return variables
+    // },
+  },
   methods: {},
   mounted() {
     // 设置验证token定时器
@@ -84,6 +101,10 @@ export default {
             if (!message.result) {
               setToken(null)
             }
+          }
+      ).catch(
+          error => {
+            console.log('layout请求验证token失败',error)
           }
       )
     }, 100 * 1000)

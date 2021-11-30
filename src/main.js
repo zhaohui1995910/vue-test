@@ -5,9 +5,11 @@ import router from './router'
 import '@/utils/route-guards'
 import ElementUi from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import Fragment from 'vue-fragment'
 
 Vue.config.productionTip = false
 Vue.use(ElementUi)
+Vue.use(Fragment.Plugin)
 
 
 new Vue({
