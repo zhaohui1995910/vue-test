@@ -1,10 +1,10 @@
 <template>
   <div v-if="!item.hidden">
-    <template v-if="hasOneShowingChild(item.children, item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren) && !item.alwaysShow">
-      <router-link :to="item.path">
+    <template v-if="hasOneShowingChild(item.children, item)">
+      <router-link :to="resolvePath(item.path)">
         <el-menu-item :index="item.path" :key="item.path">
           <i v-if="item.meta.icon" :class="item.meta.icon"></i>
-          <span slot="title">{{ onlyOneChild.meta.title }}</span>
+          <span slot="title">{{ item.meta.title }}</span>
         </el-menu-item>
       </router-link>
     </template>
@@ -19,12 +19,14 @@
           v-for="child in item.children"
           :key="child.path"
           :item="child"
+          :base-path="resolvePath(item.path)"
       />
     </el-submenu>
   </div>
 </template>
 
 <script>
+import path from 'path'
 
 export default {
   name: "SidebarItem",
@@ -32,6 +34,10 @@ export default {
     item: {
       type: Object,
       required: true
+    },
+    basePath: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -64,6 +70,9 @@ export default {
 
       return false
     },
+    resolvePath(routePath) {
+      return path.resolve(this.basePath, routePath)
+    }
   }
 }
 </script>
