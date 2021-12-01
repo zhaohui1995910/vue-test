@@ -16,20 +16,20 @@
       </el-aside>
       <el-container>
         <!--top栏-->
-        <el-header style="text-align: right; font-size: 12px;background:bisque">
+        <el-header>
           <Hamburger class="hamburger-container" @toggleClick="toggleSideBar"/>
-          <el-dropdown>
-            <i class="el-icon-setting" style="margin-right: 15px"></i>
+          <el-dropdown style="height: 100%">
+            <img class="user-avatar" :src="require('../assets/tx.png')" alt="头像"/>
+            <i class="el-icon-setting" style="margin-right: 15px;visibility:hidden"></i>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>查看</el-dropdown-item>
               <el-dropdown-item>新增</el-dropdown-item>
               <el-dropdown-item>删除</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
-          <span>{{ user.name }}</span>
         </el-header>
         <!--内容栏-->
-        <el-main style="background: #42b983">
+        <el-main>
           <keep-alive :include="cacheView">
             <router-view/>
           </keep-alive>
@@ -109,7 +109,7 @@ export default {
     },
     filterCacheView(routes) {
       let view = []
-      routes.forEach(route=>{
+      routes.forEach(route => {
         if (route.name && route.meta && route.meta.cache) {
           view.push(route.name)
         }
@@ -155,8 +155,9 @@ export default {
 .layout {
   height: 100%;
 }
+
 .el-header {
-  padding-left: 0;
+  padding: 0;
 }
 </style>
 
@@ -172,5 +173,19 @@ export default {
   &:hover {
     background: rgba(0, 0, 0, .025)
   }
+}
+
+.user-avatar {
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  padding-top: 10px;
+}
+
+.el-header {
+  text-align: right;
+  font-size: 12px;
+  box-shadow: 0 0 10px #d0d0d0
 }
 </style>
