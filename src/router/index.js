@@ -9,6 +9,7 @@ Vue.use(VueRouter)
 export const constantRoutes = [
     {
         path: '/',
+        name: 'Layout',
         component: Layout,
         meta: {title: '首页'}
     },
@@ -25,6 +26,7 @@ export const asyncRoutes = [
         path: '/test1',
         component: Layout,
         name: 'Test',
+        // hidden: true, // 不在侧边栏显示
         meta: {
             title: '测试1',
             roles: ['spider'],
@@ -33,13 +35,14 @@ export const asyncRoutes = [
         children: [
             {
                 path: 't1',
-                name: 'T1',
-                component: () => import('@/views/test'),
+                name: 'test1',
+                component: () => import('@/views/test1'),
                 meta: {
                     title: 'T111',
-                    roles: ['spider']
+                    roles: ['spider'],
+                    cache: true
                 }
-            }
+            },
         ]
     },
     {
@@ -54,8 +57,8 @@ export const asyncRoutes = [
         children: [
             {
                 path: 't2',
-                name: 'T2',
-                component: () => import('@/views/test'),
+                name: 'test2',
+                component: () => import('@/views/test2'),
                 meta: {
                     title: 'T222',
                     roles: ['spider']

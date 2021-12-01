@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: "test1",
+  name: "test2",
   data() {
     return {
       inputValue:'',

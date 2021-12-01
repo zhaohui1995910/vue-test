@@ -87,4 +87,13 @@ export default {
   display: none;
 }
 /*解决收缩菜单栏文字不隐藏 （方案二）： 使用fragment标签替换div*/
+
+
+/*解决route-link标签文字下划线*/
+a {
+  text-decoration: none;
+}
+.router-link-active{
+text-decoration: none;
+}
 </style>

@@ -30,7 +30,9 @@
         </el-header>
         <!--内容栏-->
         <el-main style="background: #42b983">
-          <router-view/>
+          <keep-alive :include="cacheView">
+            <router-view/>
+          </keep-alive>
         </el-main>
       </el-container>
 
@@ -51,13 +53,15 @@ export default {
   data() {
     return {
       asyncRoutes: this.$store.getters.asyncRoutes,
+      allRoutes: this.$store.getters.routes,
+      cacheView: [],
       openMenu: [],
       itmer: undefined,
       user: {
         name: this.$store.getters.name,
         roles: this.$store.getters.roles,
       },
-      isCollapse: true,
+      isCollapse: false,
       logoState: {
         logo: true,
         title: true,
@@ -103,8 +107,26 @@ export default {
     toggleSideBar() {
       this.isCollapse = !this.isCollapse
     },
+    filterCacheView(routes) {
+      let view = []
+      routes.forEach(route=>{
+        if (route.name && route.meta && route.meta.cache) {
+          view.push(route.name)
+        }
+        if (route.children) {
+          const tempView = this.filterCacheView(route.children)
+          view = [...view, ...tempView]
+        }
+      })
+      return view
+    },
+    initCacheView() {
+      this.cacheView = this.filterCacheView(this.allRoutes)
+    }
   },
   mounted() {
+    // 配置哪些组件缓存
+    this.initCacheView()
     // 设置验证token定时器
     this.itmer = setInterval(() => {
       verify_toekn({token: getToken()}).then(
