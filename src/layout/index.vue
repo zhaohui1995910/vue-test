@@ -2,8 +2,10 @@
   <div class="layout">
     <el-container style="height: 100%">
       <!--导航栏-->
-      <el-scrollbar style="background-color: rgb(238, 241, 246);width: 250px">
-        <logo/>
+      <el-aside style="background-color: rgb(238, 241, 246)" :style="aside_width">
+        <!--LOGO栏-->
+        <logo :logo-state="logoState.logo" :title-state="logoState.title"/>
+        <!--导航菜单栏-->
         <el-menu
             class="el-menu--vertical"
             :collapse="isCollapse"
@@ -11,16 +13,11 @@
         >
           <SidebarItem v-for="route in asyncRoutes" :key="route.path" :item="route"/>
         </el-menu>
-      </el-scrollbar>
-
+      </el-aside>
       <el-container>
-
         <!--top栏-->
         <el-header style="text-align: right; font-size: 12px;background:bisque">
-          <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">
-            <el-radio-button :label="false">展开</el-radio-button>
-            <el-radio-button :label="true">收起</el-radio-button>
-          </el-radio-group>
+          <Hamburger class="hamburger-container" @toggleClick="toggleSideBar"/>
           <el-dropdown>
             <i class="el-icon-setting" style="margin-right: 15px"></i>
             <el-dropdown-menu slot="dropdown">
@@ -31,7 +28,6 @@
           </el-dropdown>
           <span>{{ user.name }}</span>
         </el-header>
-
         <!--内容栏-->
         <el-main style="background: #42b983">
           <router-view/>
@@ -47,11 +43,11 @@ import {verify_toekn} from "@/api/user"
 import {getToken, setToken} from '@/utils/auth'
 import SidebarItem from './sidebar-item'
 import Logo from './logo'
-// import variables from '@/styles/variables.scss'
+import Hamburger from '@/components/Hamburger'
 
 export default {
   name: "Layout",
-  components: {Logo, SidebarItem},
+  components: {Logo, SidebarItem, Hamburger},
   data() {
     return {
       asyncRoutes: this.$store.getters.asyncRoutes,
@@ -62,6 +58,10 @@ export default {
         roles: this.$store.getters.roles,
       },
       isCollapse: true,
+      logoState: {
+        logo: true,
+        title: true,
+      },
     }
   },
   created() {
@@ -89,8 +89,21 @@ export default {
     // variables() {
     //   return variables
     // },
+    aside_width() {
+      // if (!this.isCollapse) {
+      //   return {width: '250px'}
+      // } else {
+      //   return {width: '64px'}
+      // }
+
+      return !this.isCollapse ? {width: '250px'} : {width: '65px'}
+    }
   },
-  methods: {},
+  methods: {
+    toggleSideBar() {
+      this.isCollapse = !this.isCollapse
+    },
+  },
   mounted() {
     // 设置验证token定时器
     this.itmer = setInterval(() => {
@@ -104,7 +117,7 @@ export default {
           }
       ).catch(
           error => {
-            console.log('layout请求验证token失败',error)
+            console.log('layout请求验证token失败', error)
           }
       )
     }, 100 * 1000)
@@ -119,5 +132,23 @@ export default {
 <style scoped>
 .layout {
   height: 100%;
+}
+.el-header {
+  padding-left: 0;
+}
+</style>
+
+<style lang="scss" scoped>
+.hamburger-container {
+  line-height: 46px;
+  height: 100%;
+  float: left;
+  cursor: pointer;
+  transition: background .3s;
+  -webkit-tap-highlight-color: transparent;
+
+  &:hover {
+    background: rgba(0, 0, 0, .025)
+  }
 }
 </style>

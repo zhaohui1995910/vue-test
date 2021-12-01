@@ -2,8 +2,8 @@
   <div class="sidebar-logo-container">
     <transition>
       <router-link to="/">
-        <img :src="logo" alt="" class="sidebar-logo">
-        <h1 class="sidebar-title">{{ title }}</h1>
+        <img v-if="logoState" :src="logo" alt="" class="sidebar-logo">
+        <h1 v-if="titleState" class="sidebar-title">{{ title }}</h1>
       </router-link>
     </transition>
   </div>
@@ -12,6 +12,7 @@
 <script>
 export default {
   name: "Logo",
+  props: ["logoState", "titleState"],
   data() {
     return {
       title: 'Vue Test',
@@ -36,7 +37,6 @@ export default {
   width: 25px;
   height: 25px;
   vertical-align: middle;
-  margin-right: 10px;
 }
 
 .sidebar-title {
@@ -49,6 +49,7 @@ export default {
   font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
   vertical-align: middle;
   margin-right: 45px;
+  margin-left: 10px;
 }
 
 </style>
